@@ -1,17 +1,14 @@
 const express = require("express");
 const expressHandlebars = require("express-handlebars");
 const path = require("path");
-const CustomMorganToken = require("./public/js/models/Custom_Morgan_Token");
+const Todo = require("./todo");
 // Morgan is a tool to create more useful logging and debugging.
 const morgan = require("morgan");
+const CustomMorganToken = require("./Custom_Morgan_Token");
 
 const app = express();
 const port = 3000;
 const hostname = "127.0.0.1";
-
-const Todo = require("./public/js/models/Todo");
-const TodoHandler = new Todo.TodoHandler();
-const Token = new CustomMorganToken(morgan, app);
 
 // ################## REQUIRED CONFIG ##################
 // Configure template Engine and Main Template File
@@ -30,12 +27,15 @@ app.use(express.urlencoded({ extended: true })); // Needed for forms to work.
 app.use(express.static("./src/public")); // Public folder. Css and  JS access.
 app.use(express.json()); // Tells the server to expect request info to be in JSON format.
 // Custom token for printing in the console whevener we recieve a request.
-Token.enable();
+new CustomMorganToken(morgan, app).enable();
 // ######################################################
+
+const TodoHandler = new Todo.TodoHandler();
 
 // ####################### ROUTES #######################
 // Home
-app.get("/", (request, response) => {
+app.get("/", async (req, res) => {
+    await TodoHandler.getTodos();
     let isCurrentEmpty = true;
     let isFinishedEmpty = true;
     if (TodoHandler.current.length > 0) {
@@ -45,7 +45,7 @@ app.get("/", (request, response) => {
         isFinishedEmpty = false;
     }
 
-    response.status(200).render("home", {
+    res.status(200).render("home", {
         title: "Todos",
         todosCurrent: TodoHandler.current,
         todosFinished: TodoHandler.finished,
@@ -77,31 +77,31 @@ app.get("/", (request, response) => {
 });
 
 // Create new todo
-app.post("/new", (request, response) => {
-    TodoHandler.addTodo(
-        request.body.newDescription,
-        request.body.newDate,
-        request.body.newTime,
-        request.body.newPrio
+app.post("/new", async (req, res) => {
+    await TodoHandler.addTodo(
+        req.body.newDescription,
+        req.body.newDate,
+        req.body.newTime,
+        req.body.newPrio
     );
-    response.status(300).redirect("/");
+    res.status(300).redirect("/");
 });
 
 // Trigger sort
-app.post("/sort/:group/:method", (request, response) => {
-    if (request.params.group === "current") {
-        TodoHandler.currentSort = request.params.method;
-    } else if (request.params.group === "finished") {
-        TodoHandler.finishedSort = request.params.method;
+app.post("/sort/:group/:method", (req, res) => {
+    if (req.params.group === "current") {
+        TodoHandler.currentSort = req.params.method;
+    } else if (req.params.group === "finished") {
+        TodoHandler.finishedSort = req.params.method;
     }
     TodoHandler.verify();
-    response.status(300).redirect("/");
+    res.status(300).redirect("/");
 });
 
 // Go to edit page
-app.get("/:id/edit", (request, response) => {
-    let todo = TodoHandler.getById(request.params.id);
-    response.status(200).render("todo-edit", {
+app.get("/:id/edit", async (req, res) => {
+    let todo = await TodoHandler.getById(req.params.id);
+    res.status(200).render("todo-edit", {
         title: "Edit",
         todo: todo,
         layout: "edit",
@@ -109,62 +109,57 @@ app.get("/:id/edit", (request, response) => {
 });
 
 // Do the edit
-app.post("/:id/edit", (request, response) => {
-    if (
-        TodoHandler.edit(
-            parseInt(request.params.id),
+app.post("/:id/edit", async (req, res) => {
+    try {
+        await TodoHandler.editTodo(
+            req.params.id,
             "description",
-            request.body.newDescription
-        ) &&
-        TodoHandler.edit(
-            parseInt(request.params.id),
+            req.body.newDescription
+        );
+        await TodoHandler.editTodo(
+            req.params.id,
             "date",
-            request.body.newDate + " - " + request.body.newTime
-        ) &&
-        TodoHandler.edit(
-            parseInt(request.params.id),
-            "prio",
-            request.body.newPrio
-        )
-    ) {
+            req.body.newDate + " - " + req.body.newTime
+        );
+        await TodoHandler.editTodo(req.params.id, "prio", req.body.newPrio);
         TodoHandler.verify();
-        response.status(300).redirect("/");
-    } else {
-        console.log(TodoHandler.error);
-        response.status(400).redirect("/");
+        res.status(300).redirect("/");
+    } catch (error) {
+        console.log("ERROR: ", error);
+        res.status(400).redirect("/");
     }
 });
 
 // Mark todo as finished
-app.post("/:id/done", (request, response) => {
-    if (TodoHandler.edit(parseInt(request.params.id), "isFinished", true)) {
-        TodoHandler.verify();
-        response.status(300).redirect("/");
-    } else {
-        console.log(TodoHandler.error);
-        response.statusCode(400).redirect("/");
+app.post("/:id/done", async (req, res) => {
+    try {
+        await TodoHandler.editTodo(req.params.id, "isFinished", true);
+        res.status(300).redirect("/");
+    } catch (error) {
+        console.log("ERROR: ", error);
+        res.status(400).redirect("/");
     }
 });
 
 // Mark todo as not finished
-app.post("/:id/undo", (request, response) => {
-    if (TodoHandler.edit(parseInt(request.params.id), "isFinished", false)) {
-        TodoHandler.verify();
-        response.status(300).redirect("/");
-    } else {
-        console.log(TodoHandler.error);
-        response.status(400).redirect("/");
+app.post("/:id/undo", async (req, res) => {
+    try {
+        await TodoHandler.editTodo(req.params.id, "isFinished", false);
+        res.status(300).redirect("/");
+    } catch (error) {
+        console.log("ERROR: ", error);
+        res.status(400).redirect("/");
     }
 });
 
 // Delete todo
-app.post("/:id/delete", (request, response) => {
-    if (TodoHandler.delete(parseInt(request.params.id))) {
-        TodoHandler.verify();
-        response.status(300).redirect("/");
-    } else {
-        console.log(TodoHandler.error);
-        response.status(400).redirect("/");
+app.post("/:id/delete", async (req, res) => {
+    try {
+        await TodoHandler.deleteTodo(req.params.id);
+        res.status(300).redirect("/");
+    } catch (error) {
+        console.log("ERROR: ", error);
+        res.status(400).redirect("/");
     }
 });
 

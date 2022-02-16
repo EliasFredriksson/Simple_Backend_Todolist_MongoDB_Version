@@ -8,7 +8,7 @@ class CustomMorganToken {
             // Escape character for coloring text in terminal.
             let output = `\n\x1b[33m\x1b[1m============== REQUEST ==============\x1b[0m\n`;
             output += `URL:\t${req.url}\n`;
-            output += `METHOD:\t\x1b[1m${req.method}\x1b[0m\n`;
+            output += `METHOD:\t\x1b[1m\x1b[36m${req.method}\x1b[0m\n`;
             let statusColor = "\x1b[35m"; // Default is Magenta (aka unknown).
             switch (parseInt(String(res.statusCode).charAt(0))) {
                 case 2:
