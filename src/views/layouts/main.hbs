@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{{ title }}</title>
+
+        {{!-- MAIN CSS --}}
+        <link rel="stylesheet" href="/css/main.css" />
+
+        {{!-- MODAL SCRIPT --}}
+        <script src="/js/modal.js"></script>
+
+        {{!-- FONT AWSOME --}}
+        <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+            integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm"
+            crossorigin="anonymous"
+        />
+
+        {{!-- GOOGLE FONTS --}}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Dongle:wght@300&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+
+    <div id="modal" class="hide">
+        <div id="modal-background"></div>
+        <div id="modal-content">
+            <div id="modal-inner-content">
+                <form action="/new" method="post" id="new-todo-form">
+                    <textarea
+                        name="newDescription"
+                        id="new-todo-textarea"
+                        placeholder="Add description here"
+                        required
+                    ></textarea>
+                    <div id="new-todo-inner">
+                        <span>Deadline</span>
+                        <input
+                            type="date"
+                            name="newDate"
+                            id="new-todo-date"
+                            required
+                        />
+                        <input
+                            type="time"
+                            name="newTime"
+                            id="new-todo-time"
+                            required
+                        />
+                        <div>
+                            <span>Prio</span>
+                            <select name="newPrio" id="new-todo-prio">
+                                <option value="High">High</option>
+                                <option value="Mid">Mid</option>
+                                <option value="Low">Low</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input id="new-todo-submit" type="submit" value="Add" />
+                </form>
+            </div>
+            <div id="modal-inner-buttons">
+                <button id="modal-close-button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <body>
+        {{{body}}}
+    </body>
+</html>

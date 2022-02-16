@@ -1,0 +1,492 @@
+/* ######## HTML / BODY ######## */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Dongle", sans-serif;
+    font-size: 16pt;
+    height: 100%;
+    color: white;
+    scroll-behavior: smooth;
+}
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ######## HEADER ######## */
+header {
+    position: relative;
+    height: 100px;
+    background-color: rgb(50, 50, 50);
+    color: orange;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+#home-welcome {
+    margin-left: 20px;
+}
+#edit-welcome {
+    width: 100%;
+    text-align: center;
+}
+#back-button {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    left: 30px;
+    font-size: 30pt;
+    border-radius: 50%;
+    background-color: darkgray;
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 10px 10px 2px black;
+    transition: transform 0.1s ease, background-color 0.1s ease;
+}
+#back-button:hover {
+    transform: scale(1.1);
+}
+#back-button:active {
+    transform: scale(1.05);
+    background-color: gray;
+}
+@media screen and (min-width: 800px) {
+    header {
+        justify-content: center;
+    }
+    #home-welcome {
+        margin-left: 0;
+    }
+}
+/* ######## SCROLL LINK ######## */
+#scroll-to-finished {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 50%;
+}
+#scroll-to-finished > i {
+    width: 60px;
+    height: 60px;
+    font-size: 34pt;
+    color: rgb(177, 94, 0);
+    border-radius: 50%;
+    background-color: rgb(20, 20, 20);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+#scroll-to-finished > i:hover {
+    transform: scale(1.08);
+    background-color: orange;
+    color: black;
+}
+@media screen and (min-width: 800px) {
+    #scroll-to-finished {
+        display: none;
+    }
+}
+/* ######## MAIN ######## */
+main {
+    flex-grow: 1;
+    background-color: rgb(30, 30, 30);
+
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+
+/* ######## FOOTER ######## */
+footer {
+    background-color: rgb(50, 50, 50);
+    color: orange;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+/* ######## TITLE ######## */
+.title {
+    text-align: center;
+    margin: 0;
+}
+
+/* ######## FILTER ######## */
+#current-filter-form,
+#finished-filter-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+#current-filter-form > button,
+#finished-filter-form > button {
+    width: 30px;
+    cursor: pointer;
+}
+
+/* ######## TODO ######## */
+#current-title-wrapper,
+#finished-title-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+#todo-wrapper {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+#current-wrapper,
+#finished-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+#current-inner-wrapper,
+#finished-inner-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    gap: 10px;
+}
+.todo {
+    position: relative;
+    background-color: rgb(150, 150, 150);
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+    transition: transform 0.1s ease;
+}
+.todo:hover {
+    transform: scale(1.05);
+}
+.current-inner,
+.finished-inner {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.current-inner-inner,
+.finished-inner-inner {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.description,
+.date,
+.prio {
+    flex-grow: 1;
+    background-color: rgb(220, 220, 220);
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    pointer-events: none;
+    gap: 5px;
+}
+.Low {
+    color: rgb(43, 185, 0);
+}
+.Mid {
+    color: rgb(255, 225, 55);
+}
+.High {
+    color: rgb(255, 0, 0);
+}
+.description {
+    justify-content: center;
+    font-size: 1.4em;
+    height: 80%;
+}
+.todo-actions {
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.no-todos {
+    width: 100%;
+    flex-grow: 1;
+    background-color: rgb(20, 20, 20);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.finished-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.finished-overlay > i {
+    font-size: 1.6em;
+}
+
+@media screen and (min-width: 800px) {
+    #todo-wrapper {
+        flex-direction: row;
+    }
+    #current-wrapper,
+    #finished-wrapper {
+        width: 50%;
+    }
+}
+@media screen and (min-width: 1020px) {
+    #todo-wrapper {
+        width: 75%;
+    }
+}
+
+/* ----- Action Buttons ----- */
+.todo-actions > button {
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    background-color: orange;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+.todo-actions > button:hover {
+    background-color: rgb(197, 105, 0);
+    color: white;
+}
+
+/* ######## EDIT ######## */
+#edit-form {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    color: black;
+    padding: 10px;
+    margin: 10px;
+    width: 100%;
+    border-radius: 10px;
+    gap: 10px;
+}
+#edit-prio {
+    align-self: center;
+    justify-self: center;
+}
+#edit-textarea {
+    width: 100%;
+    flex-grow: 1;
+    box-sizing: border-box;
+    resize: none;
+    font-size: 1.2em;
+}
+#edit-confirm {
+    cursor: pointer;
+    font-size: 1em;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(255, 238, 144);
+    width: 100%;
+    transition: background-color 0.1s ease, color 0.1s ease;
+}
+#edit-confirm:hover {
+    background-color: rgb(184, 169, 84);
+    color: white;
+}
+#date-time-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: space-between;
+}
+#date-time-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+@media screen and (min-width: 640px) {
+    #edit-form {
+        width: 660px;
+    }
+    #date-time-wrapper {
+        flex-direction: row;
+    }
+    #date-time-inner {
+        flex-direction: row;
+    }
+}
+
+/* ######## MODAL ######## */
+#modal {
+    position: absolute;
+    transition: opacity 0.3s ease;
+    z-index: 99;
+}
+#modal-background {
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+}
+#modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 85%;
+    height: 300px;
+    background-color: white;
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: row;
+}
+#new-todo-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+}
+#new-todo-inner > div {
+    text-align: center;
+}
+@media screen and (min-width: 640px) {
+    #new-todo-inner {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+/* ---- Buttons ---- */
+#modal-show-button,
+#modal-close-button {
+    width: 60px;
+    height: 60px;
+
+    position: absolute;
+    right: 30px;
+
+    font-size: 30pt;
+    border-radius: 10px;
+
+    background-color: rgb(74, 236, 42);
+    color: white;
+    border: none;
+    cursor: pointer;
+
+    box-shadow: 10px 10px 2px black;
+    transition: transform 0.1s ease, background-color 0.1s ease;
+}
+#modal-close-button {
+    position: relative;
+    right: 0px;
+    background-color: red;
+    box-shadow: none;
+    font-size: 20pt;
+    width: 50px;
+    height: 50px;
+}
+#modal-show-button:hover,
+#modal-close-button:hover {
+    transform: scale(1.1);
+}
+#modal-show-button:active {
+    transform: scale(1.05);
+    background-color: rgb(55, 179, 30);
+}
+#modal-close-button:active {
+    transform: scale(1.05);
+    background-color: darkred;
+}
+/* ---- Animations ---- */
+@media screen and (min-width: 640px) {
+    #modal-content {
+        width: 500px;
+    }
+}
+@keyframes slide-in {
+    from {
+        top: -100%;
+    }
+    to {
+        top: 50%;
+    }
+}
+@keyframes slide-out {
+    from {
+        top: 50%;
+    }
+    to {
+        top: -100%;
+    }
+}
+.show {
+    opacity: 1;
+}
+.hide {
+    opacity: 0;
+}
+.slide-in {
+    animation: slide-in 0.3s ease-out;
+}
+.slide-out {
+    animation: slide-out 0.6s linear;
+}
+/* ---- Content ---- */
+#modal-inner-content {
+    flex-grow: 1;
+    padding: 10px;
+}
+#new-todo-form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: black;
+}
+#new-todo-textarea {
+    flex-grow: 1;
+    width: 100%;
+    resize: none;
+}
+#new-todo-submit {
+    cursor: pointer;
+    font-size: 1em;
+    padding: 5px;
+    border: none;
+    background-color: rgb(255, 238, 144);
+    width: 100%;
+    transition: background-color 0.1s ease, color 0.1s ease;
+}
+#new-todo-submit:hover {
+    background-color: rgb(184, 169, 84);
+    color: white;
+}
+#modal-inner-buttons {
+    /* border: 2px solid red;
+    box-sizing: border-box; */
+    padding-top: 10px;
+    padding-right: 10px;
+}

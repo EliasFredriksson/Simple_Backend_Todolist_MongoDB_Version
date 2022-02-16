@@ -1,0 +1,142 @@
+<header>{{>header}}</header>
+<main>
+    <div id="todo-wrapper">
+        <div id="current-wrapper">
+            <div id="current-title-wrapper">
+                <h2 class="title">Current:</h2>
+                <form action="#" method="post" id="current-filter-form">
+                    <i class="fas fa-filter"></i>
+                    {{#each sorts}}
+                    <button
+                        type="submit"
+                        formaction="/sort/current/{{ this.method }}"
+                        title="Sort by {{this.title}}"
+                    >
+                        <i class="{{ this.symbol }}"></i>
+                    </button>
+                    {{/each}}
+                </form>
+            </div>
+            <div id="current-inner-wrapper">
+                {{#if isCurrentEmpty}}
+                <div class="no-todos">
+                    <h2>No todos left. Well done!</h2>
+                </div>
+                {{else}}
+                {{#each todosCurrent}}
+                <div class="todo">
+                    <div class="current-inner">
+                        <span class="description">{{ description }}</span>
+                        <div class="current-inner-inner">
+                            <span class="date">Deadline: {{ dateString }}</span>
+                            <div class="prio">
+                                <span>Prio:</span>
+                                <span class="{{prio}}"><b>{{prio}}</b></span>
+                            </div>
+                        </div>
+                    </div>
+                    <form action="#" class="todo-actions">
+                        <button
+                            type="submit"
+                            formaction="/{{ id }}/done"
+                            formmethod="post"
+                            class="button-done"
+                        >
+                            <i class="fas fa-check"></i>
+                        </button>
+
+                        <button
+                            type="submit"
+                            formaction="/{{ id }}/edit"
+                            formmethod="get"
+                            class="button-edit"
+                        >
+                            <i class="fas fa-edit"></i>
+                        </button>
+
+                        <button
+                            type="submit"
+                            formaction="/{{ id }}/delete"
+                            formmethod="post"
+                            class="button-trash"
+                        >
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </div>
+                {{/each}}
+                {{/if}}
+            </div>
+        </div>
+        <div id="finished-wrapper">
+            <div id="finished-title-wrapper">
+                <h2 class="title">Finished:</h2>
+                <form action="#" method="post" id="finished-filter-form">
+                    <i class="fas fa-filter"></i>
+                    {{#each sorts}}
+                    <button
+                        type="submit"
+                        formaction="/sort/finished/{{ this.method }}"
+                        title="Sort by {{this.title}}"
+                    >
+                         <i class="{{ this.symbol }}"></i>
+                    </button>
+                    {{/each}}
+                </form>
+                </form>
+            </div>
+            <div id="finished-inner-wrapper">
+                {{#if isFinishedEmpty}}
+                <div class="no-todos">
+                    <h2>Finish some todos!</h2>
+                </div>
+                {{else}}
+                {{#each todosFinished}}
+                <div class="todo">
+                    <div class="finished-overlay"><i class="fas fa-check"></i></div>
+                    <div class="finished-inner">
+                        <span class="description">{{ description }}</span>
+                        <div class="finished-inner-inner">
+                            <span class="date">Deadline: {{ dateString }}</span>
+                            <div class="prio">
+                                <span>Prio:</span>
+                                <span class="{{prio}}"><b>{{prio}}</b></span>
+                            </div>
+                        </div>
+                    </div>
+                    <form action="#" class="todo-actions">
+                        <button
+                            type="submit"
+                            formaction="/{{ id }}/undo"
+                            formmethod="post"
+                            class="button-undo"
+                        >
+                            <i class="fas fa-times"></i>
+                        </button>
+
+                        <button
+                            type="submit"
+                            formaction="/{{ id }}/edit"
+                            formmethod="get"
+                            class="button-edit"
+                        >
+                            <i class="fas fa-edit"></i>
+                        </button>
+
+                        <button
+                            type="submit"
+                            formaction="/{{ id }}/delete"
+                            formmethod="post"
+                            class="button-trash"
+                        >
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </div>            
+                {{/each}}
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</main>
+<footer>{{>footer}}</footer>

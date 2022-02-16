@@ -1,0 +1,32 @@
+<header>{{>header-edit}}</header>
+<main>
+    <form action="/{{ todo.id }}/edit" method="post" id="edit-form">
+        <textarea name="newDescription" id="edit-textarea" required>{{
+            todo.description
+        }}</textarea>
+        <div id="date-time-wrapper">
+            <div id="date-time-inner">
+                <span>Deadline</span>
+                <input
+                    type="date"
+                    name="newDate"
+                    id="edit-date"
+                    required
+                    value="{{ todo.dateString }}"
+                />
+                <input type="time" name="newTime" id="edit-time" required />
+            </div>
+            <span>Old Deadline: {{ todo.dateString }}</span>
+            <div id="edit-prio">
+                <span>Prio</span>
+                <select name="newPrio" id="new-todo-prio">
+                    <option value="High">High</option>
+                    <option value="Mid">Mid</option>
+                    <option value="Low">Low</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" id="edit-confirm">Confirm</button>
+    </form>
+</main>
+<footer>{{>footer}}</footer>
