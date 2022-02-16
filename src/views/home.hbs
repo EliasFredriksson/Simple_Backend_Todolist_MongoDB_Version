@@ -9,7 +9,7 @@
                     {{#each sorts}}
                     <button
                         type="submit"
-                        formaction="/sort/current/{{ this.method }}"
+                        formaction="/todo/sort/current/{{ this.method }}"
                         title="Sort by {{this.title}}"
                     >
                         <i class="{{ this.symbol }}"></i>
@@ -38,7 +38,7 @@
                     <form action="#" class="todo-actions">
                         <button
                             type="submit"
-                            formaction="/{{ id }}/done"
+                            formaction="/todo/{{ id }}/done"
                             formmethod="post"
                             class="button-done"
                         >
@@ -47,7 +47,7 @@
 
                         <button
                             type="submit"
-                            formaction="/{{ id }}/edit"
+                            formaction="/todo/{{ id }}/edit"
                             formmethod="get"
                             class="button-edit"
                         >
@@ -56,7 +56,7 @@
 
                         <button
                             type="submit"
-                            formaction="/{{ id }}/delete"
+                            formaction="/todo/{{ id }}/delete"
                             formmethod="post"
                             class="button-trash"
                         >
@@ -76,7 +76,7 @@
                     {{#each sorts}}
                     <button
                         type="submit"
-                        formaction="/sort/finished/{{ this.method }}"
+                        formaction="/todo/sort/finished/{{ this.method }}"
                         title="Sort by {{this.title}}"
                     >
                          <i class="{{ this.symbol }}"></i>
@@ -107,7 +107,7 @@
                     <form action="#" class="todo-actions">
                         <button
                             type="submit"
-                            formaction="/{{ id }}/undo"
+                            formaction="/todo/{{ id }}/undo"
                             formmethod="post"
                             class="button-undo"
                         >
@@ -116,7 +116,7 @@
 
                         <button
                             type="submit"
-                            formaction="/{{ id }}/edit"
+                            formaction="/todo/{{ id }}/edit"
                             formmethod="get"
                             class="button-edit"
                         >
@@ -125,7 +125,7 @@
 
                         <button
                             type="submit"
-                            formaction="/{{ id }}/delete"
+                            formaction="/todo/{{ id }}/delete"
                             formmethod="post"
                             class="button-trash"
                         >
