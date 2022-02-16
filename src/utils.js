@@ -1,4 +1,4 @@
-// ####### HELPERS #######
+// ####### UTILS #######
 function getNewId(list) {
     let maxId = 0;
     for (const item of list) {

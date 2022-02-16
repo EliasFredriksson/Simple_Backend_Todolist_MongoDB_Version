@@ -1,6 +1,6 @@
 const Handler = require("./Handler");
 const Data = require("./Data");
-const Helpers = require("../helpers");
+const Helpers = require("../../../utils");
 class Todo extends Data {
     constructor(entry) {
         super();
