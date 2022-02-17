@@ -14,7 +14,7 @@ const hostname = "127.0.0.1";
 // ################## REQUIRED CONFIG ##################
 // Configure template Engine and Main Template File
 app.engine(
-    "hbs", // Vi skapar en motor i vår app som vi döper till "hbs".
+    "hbs", // We create an engine which we name "hbs" (handlebars).
     expressHandlebars.engine({
         defaultLayout: "main", // Default layout file
         extname: ".hbs", // Filename extension

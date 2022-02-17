@@ -1,6 +1,7 @@
 const express = require("express");
 const { ObjectId } = require("mongodb");
 const router = express.Router();
+const { checkValidTodo } = require("../utils");
 const tHand = require("../TodoHandler");
 const TodoHandler = new tHand();
 
@@ -23,13 +24,24 @@ router.get("/", async (req, res) => {
 
 // Create new todo
 router.post("/new", async (req, res) => {
-    await TodoHandler.addTodo(
-        req.body.newDescription,
-        req.body.newDate,
-        req.body.newTime,
-        req.body.newPrio
-    );
-    res.status(300).redirect("/todos/");
+    if (
+        checkValidTodo(
+            req.body.newDescription,
+            req.body.newDate,
+            req.body.newTime,
+            req.body.newPrio
+        )
+    ) {
+        await TodoHandler.addTodo(
+            req.body.newDescription,
+            req.body.newDate,
+            req.body.newTime,
+            req.body.newPrio
+        );
+        res.status(300).redirect("/todos/");
+    } else {
+        res.status(400).send("Invalid data provided.");
+    }
 });
 
 // Trigger sort
@@ -61,10 +73,14 @@ router.post("/:id/edit", checkValidId, async (req, res) => {
         let desc = req.body.newDescription;
         let dateTime = req.body.newDate + ":" + req.body.newTime;
         let prio = req.body.newPrio;
-        await TodoHandler.editTodo(id, "description", desc);
-        await TodoHandler.editTodo(id, "date", dateTime);
-        await TodoHandler.editTodo(id, "prio", prio);
-        res.status(300).redirect("/todos/");
+        if (checkValidTodo(desc, req.body.newDate, req.body.newTime, prio)) {
+            await TodoHandler.editTodo(id, "description", desc);
+            await TodoHandler.editTodo(id, "date", dateTime);
+            await TodoHandler.editTodo(id, "prio", prio);
+            res.status(300).redirect("/todos/");
+        } else {
+            res.status(400).send("Invalid data provided.");
+        }
     } catch (error) {
         console.log("ERROR: ", error);
         res.status(400).redirect("/todos/");
