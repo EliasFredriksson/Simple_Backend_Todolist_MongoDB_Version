@@ -1,30 +1,17 @@
+const Todo = require("./public/js/models/Todo");
 const { ObjectId } = require("mongodb");
 const getDatabase = require("./database");
 
-class Todo {
-    constructor(entry) {
-        this.id = entry._id;
-        this.description = entry.description;
-        this.date = new Date(entry.date);
-        this.dateString =
-            this.date.toLocaleDateString() +
-            " - " +
-            this.date.toLocaleTimeString();
-        this.isFinished = entry.isFinished;
-        this.prio = entry.prio;
-    }
-}
-
 class TodoHandler {
     constructor() {
-        this.currentSort = "prio_as";
-        this.finishedSort = "prio_as";
+        this.currentSort = "prio_de";
+        this.finishedSort = "prio_de";
         this.getTodos();
     }
 
     async getTodos() {
-        const db = await getDatabase();
-        const data = db.collection("Todos").find().toArray();
+        this.db = await getDatabase();
+        const data = this.db.collection("Todos").find().toArray();
         this.data = (await data).map((entry) => {
             return new Todo(entry);
         });
@@ -32,27 +19,24 @@ class TodoHandler {
     }
 
     async addTodo(description, date, time, prio) {
-        const db = await getDatabase();
-        db.collection("Todos").insertOne({
+        await this.db.collection("Todos").insertOne({
             description: description,
             date: date + ":" + time,
             isFinished: false,
             prio: prio,
         });
+        await this.getTodos();
     }
 
     async getById(id) {
-        const db = await getDatabase();
-        const todo = await db
+        const todo = await this.db
             .collection("Todos")
             .findOne({ _id: ObjectId(id) });
-        console.log("TODO: ", todo);
         return new Todo(todo);
     }
 
     async editTodo(id, whichPropery, newValue) {
-        const db = await getDatabase();
-        db.collection("Todos").updateOne(
+        await this.db.collection("Todos").updateOne(
             { _id: ObjectId(id) },
             {
                 $set: {
@@ -60,11 +44,12 @@ class TodoHandler {
                 },
             }
         );
+        await this.getTodos();
     }
 
     async deleteTodo(id) {
-        const db = await getDatabase();
-        await db.collection("Todos").deleteOne({ _id: ObjectId(id) });
+        await this.db.collection("Todos").deleteOne({ _id: ObjectId(id) });
+        await this.getTodos();
     }
 
     verify() {
@@ -116,7 +101,4 @@ class TodoHandler {
     }
 }
 
-module.exports = {
-    Todo,
-    TodoHandler,
-};
+module.exports = TodoHandler;

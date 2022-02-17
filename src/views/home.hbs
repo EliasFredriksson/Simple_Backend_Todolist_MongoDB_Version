@@ -6,15 +6,34 @@
                 <h2 class="title">Current:</h2>
                 <form action="#" method="post" id="current-filter-form">
                     <i class="fas fa-filter"></i>
-                    {{#each sorts}}
                     <button
                         type="submit"
-                        formaction="/todo/sort/current/{{ this.method }}"
-                        title="Sort by {{this.title}}"
+                        formaction="/todo/sort/current/date_as"
+                        title="Sort by date in ascending order"
                     >
-                        <i class="{{ this.symbol }}"></i>
+                        <i class="fas fa-sort-amount-up"></i>
                     </button>
-                    {{/each}}
+                    <button
+                        type="submit"
+                        formaction="/todo/sort/current/date_de"
+                        title="Sort by date in descending order"
+                    >
+                        <i class="fas fa-sort-amount-down-alt"></i>
+                    </button>
+                    <button
+                        type="submit"
+                        formaction="/todo/sort/current/prio_as"
+                        title="Sort by priority in ascending order"
+                    >
+                        <i class="fas fa-sort-up"></i>
+                    </button>
+                    <button
+                        type="submit"
+                        formaction="/todo/sort/current/prio_de"
+                        title="Sort by priority in descending order"
+                    >
+                        <i class="fas fa-sort-down"></i>
+                    </button>
                 </form>
             </div>
             <div id="current-inner-wrapper">
@@ -73,15 +92,34 @@
                 <h2 class="title">Finished:</h2>
                 <form action="#" method="post" id="finished-filter-form">
                     <i class="fas fa-filter"></i>
-                    {{#each sorts}}
                     <button
                         type="submit"
-                        formaction="/todo/sort/finished/{{ this.method }}"
-                        title="Sort by {{this.title}}"
+                        formaction="/todo/sort/finished/date_as"
+                        title="Sort by date in ascending order"
                     >
-                         <i class="{{ this.symbol }}"></i>
+                        <i class="fas fa-sort-amount-up"></i>
                     </button>
-                    {{/each}}
+                    <button
+                        type="submit"
+                        formaction="/todo/sort/finished/date_de"
+                        title="Sort by date in descending order"
+                    >
+                        <i class="fas fa-sort-amount-down-alt"></i>
+                    </button>
+                    <button
+                        type="submit"
+                        formaction="/todo/sort/finished/prio_as"
+                        title="Sort by priority in ascending order"
+                    >
+                        <i class="fas fa-sort-up"></i>
+                    </button>
+                    <button
+                        type="submit"
+                        formaction="/todo/sort/finished/prio_de"
+                        title="Sort by priority in descending order"
+                    >
+                        <i class="fas fa-sort-down"></i>
+                    </button>
                 </form>
                 </form>
             </div>

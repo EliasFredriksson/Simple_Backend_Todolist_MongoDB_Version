@@ -1,19 +1,14 @@
 const express = require("express");
-const Todo = require("../todo");
-const TodoHandler = new Todo.TodoHandler();
-
 const router = express.Router();
+const tHand = require("../TodoHandler");
+const TodoHandler = new tHand();
 
 router.get("/", async (req, res) => {
-    await TodoHandler.getTodos();
+    TodoHandler.verify();
     let isCurrentEmpty = true;
     let isFinishedEmpty = true;
-    if (TodoHandler.current.length > 0) {
-        isCurrentEmpty = false;
-    }
-    if (TodoHandler.finished.length > 0) {
-        isFinishedEmpty = false;
-    }
+    if (TodoHandler.current.length > 0) isCurrentEmpty = false;
+    if (TodoHandler.finished.length > 0) isFinishedEmpty = false;
 
     res.status(200).render("home", {
         title: "Todos",
@@ -21,28 +16,6 @@ router.get("/", async (req, res) => {
         todosFinished: TodoHandler.finished,
         isCurrentEmpty: isCurrentEmpty,
         isFinishedEmpty: isFinishedEmpty,
-        sorts: [
-            {
-                title: "date in ascending order",
-                method: "date_as",
-                symbol: "fas fa-sort-amount-up",
-            },
-            {
-                title: "date in descending order",
-                method: "date_de",
-                symbol: "fas fa-sort-amount-down-alt",
-            },
-            {
-                title: "priority in ascending order",
-                method: "prio_as",
-                symbol: "fas fa-sort-up",
-            },
-            {
-                title: "priority in descending order",
-                method: "prio_de",
-                symbol: "fas fa-sort-down",
-            },
-        ],
     });
 });
 
@@ -80,17 +53,13 @@ router.get("/:id/edit", async (req, res) => {
 // Do the edit
 router.post("/:id/edit", async (req, res) => {
     try {
-        await TodoHandler.editTodo(
-            req.params.id,
-            "description",
-            req.body.newDescription
-        );
-        await TodoHandler.editTodo(
-            req.params.id,
-            "date",
-            req.body.newDate + ":" + req.body.newTime
-        );
-        await TodoHandler.editTodo(req.params.id, "prio", req.body.newPrio);
+        let id = req.params.id;
+        let desc = req.body.newDescription;
+        let dateTime = req.body.newDate + ":" + req.body.newTime;
+        let prio = req.body.newPrio;
+        await TodoHandler.editTodo(id, "description", desc);
+        await TodoHandler.editTodo(id, "date", dateTime);
+        await TodoHandler.editTodo(id, "prio", prio);
         res.status(300).redirect("/");
     } catch (error) {
         console.log("ERROR: ", error);
