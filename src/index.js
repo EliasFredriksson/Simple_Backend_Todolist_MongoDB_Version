@@ -30,10 +30,19 @@ app.use(express.urlencoded({ extended: true })); // Needed for forms to work.
 app.use(express.json()); // Tells the server to expect request info to be in JSON format.
 // Static files
 app.use(express.static("./src/public")); // Public folder. Css and  JS access.
-app.use("/todo", todoRouter); // Tells the server to use our todoRouter on "/todo" urls.
+app.use("/todos", todoRouter); // Tells the server to use our todoRouter on "/todo" urls.
 // ####################### ROUTES #######################
 app.get("/", (req, res) => {
-    res.redirect("/todo");
+    res.render("home");
+});
+
+// After all routes have been declared we implement a / route to
+// catch all route we dont handle. (404 invalid urls).
+app.use("/", (req, res) => {
+    return res.status(404).render("not-found", {
+        code: "404",
+        msg: `Route ${req.url} not found.`,
+    });
 });
 
 // ####################### LISTEN #######################

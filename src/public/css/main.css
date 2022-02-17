@@ -12,6 +12,24 @@ body {
 body {
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* ######## SCROLBAR ######## */
+/* Firefox */
+* {
+    scrollbar-width: 10px;
+    scrollbar-color: rgb(98, 98, 98) orange;
+}
+/* Edge, Chrome, Safari */
+*::-webkit-scrollbar {
+    width: 10px;
+}
+*::-webkit-scrollbar-track {
+    background-color: rgb(98, 98, 98);
+}
+*::-webkit-scrollbar-thumb {
+    background-color: orange;
 }
 
 /* ######## HEADER ######## */
@@ -98,10 +116,27 @@ header {
 main {
     flex-grow: 1;
     background-color: rgb(30, 30, 30);
-
     display: flex;
     justify-content: center;
     padding-bottom: 20px;
+}
+#main-welcome {
+    flex-direction: column;
+    align-items: center;
+}
+#main-welcome > a {
+    text-decoration: none;
+    color: white;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: rgb(74, 236, 42);
+    font-size: 2em;
+    border-radius: 5px;
+    transition: transform 0.5s ease, background-color 0.3s ease;
+}
+#main-welcome > a:hover {
+    transform: scale(1.2) translateY(-10px);
+    background-color: rgb(61, 164, 40);
 }
 
 /* ######## FOOTER ######## */
@@ -246,7 +281,6 @@ footer {
 .finished-overlay > i {
     font-size: 1.6em;
 }
-
 @media screen and (min-width: 800px) {
     #todo-wrapper {
         flex-direction: row;
@@ -340,6 +374,8 @@ footer {
 /* ######## MODAL ######## */
 #modal {
     position: absolute;
+    top: 0;
+    left: 0;
     transition: opacity 0.3s ease;
     z-index: 99;
 }

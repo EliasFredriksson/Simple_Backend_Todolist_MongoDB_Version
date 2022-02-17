@@ -1,4 +1,5 @@
 const express = require("express");
+const { ObjectId } = require("mongodb");
 const router = express.Router();
 const tHand = require("../TodoHandler");
 const TodoHandler = new tHand();
@@ -10,7 +11,8 @@ router.get("/", async (req, res) => {
     if (TodoHandler.current.length > 0) isCurrentEmpty = false;
     if (TodoHandler.finished.length > 0) isFinishedEmpty = false;
 
-    res.status(200).render("home", {
+    res.status(200).render("todos", {
+        showModalButton: true,
         title: "Todos",
         todosCurrent: TodoHandler.current,
         todosFinished: TodoHandler.finished,
@@ -27,7 +29,7 @@ router.post("/new", async (req, res) => {
         req.body.newTime,
         req.body.newPrio
     );
-    res.status(300).redirect("/");
+    res.status(300).redirect("/todos/");
 });
 
 // Trigger sort
@@ -37,21 +39,23 @@ router.post("/sort/:group/:method", (req, res) => {
     } else if (req.params.group === "finished") {
         TodoHandler.finishedSort = req.params.method;
     }
-    res.status(300).redirect("/");
+    res.status(300).redirect("/todos/");
 });
 
 // Go to edit page
-router.get("/:id/edit", async (req, res) => {
+router.get("/:id/edit", checkValidId, async (req, res) => {
     let todo = await TodoHandler.getById(req.params.id);
-    res.status(200).render("todo-edit", {
+    res.status(200).render("todos-edit", {
         title: "Edit",
         todo: todo,
+        date: todo.date.toLocaleDateString(),
+        time: todo.date.toLocaleTimeString(),
         layout: "edit",
     });
 });
 
 // Do the edit
-router.post("/:id/edit", async (req, res) => {
+router.post("/:id/edit", checkValidId, async (req, res) => {
     try {
         let id = req.params.id;
         let desc = req.body.newDescription;
@@ -60,44 +64,56 @@ router.post("/:id/edit", async (req, res) => {
         await TodoHandler.editTodo(id, "description", desc);
         await TodoHandler.editTodo(id, "date", dateTime);
         await TodoHandler.editTodo(id, "prio", prio);
-        res.status(300).redirect("/");
+        res.status(300).redirect("/todos/");
     } catch (error) {
         console.log("ERROR: ", error);
-        res.status(400).redirect("/");
+        res.status(400).redirect("/todos/");
     }
 });
 
 // Mark todo as finished
-router.post("/:id/done", async (req, res) => {
+router.post("/:id/done", checkValidId, async (req, res) => {
     try {
         await TodoHandler.editTodo(req.params.id, "isFinished", true);
-        res.status(300).redirect("/");
+        res.status(300).redirect("/todos/");
     } catch (error) {
         console.log("ERROR: ", error);
-        res.status(400).redirect("/");
+        res.status(400).redirect("/todos/");
     }
 });
 
 // Mark todo as not finished
-router.post("/:id/undo", async (req, res) => {
+router.post("/:id/undo", checkValidId, async (req, res) => {
     try {
         await TodoHandler.editTodo(req.params.id, "isFinished", false);
-        res.status(300).redirect("/");
+        res.status(300).redirect("/todos/");
     } catch (error) {
         console.log("ERROR: ", error);
-        res.status(400).redirect("/");
+        res.status(400).redirect("/todos/");
     }
 });
 
 // Delete todo
-router.post("/:id/delete", async (req, res) => {
+router.post("/:id/delete", checkValidId, async (req, res) => {
     try {
         await TodoHandler.deleteTodo(req.params.id);
-        res.status(300).redirect("/");
+        res.status(300).redirect("/todos/");
     } catch (error) {
         console.log("ERROR: ", error);
-        res.status(400).redirect("/");
+        res.status(400).redirect("/todos/");
     }
 });
+
+function checkValidId(req, res, next) {
+    try {
+        ObjectId(req.params.id);
+        next();
+    } catch (error) {
+        res.status(404).render("not-found", {
+            code: "404",
+            msg: "Invalid id.",
+        });
+    }
+}
 
 module.exports = router;
